@@ -8,7 +8,7 @@ end testbench;
 
 architecture tb of testbench is
 -- DUT COMPONENT
-component FullAdder is
+component JKFlipFlop is
 port(
     A, B, C: in std_logic;
     Sum, Carry: out std_logic);
@@ -19,7 +19,7 @@ signal A_IN, B_IN, C_IN, SUM_OUT, CARRY_OUT : std_logic;
 begin
 
 -- CONNECT DUT
-DUT: FullAdder port map(A_IN, B_IN, C_IN, SUM_OUT, CARRY_OUT);
+DUT: JKFlipFlop port map(A_IN, B_IN, C_IN, SUM_OUT, CARRY_OUT);
 
 	process
   	begin
