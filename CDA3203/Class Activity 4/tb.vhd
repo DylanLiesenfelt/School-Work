@@ -14,47 +14,55 @@ port(
     Q, Qbar: out std_logic);
 end component;
 
-signal and1, and2, masterSin, masterSout, masterRin,
-masterRout, slaveSin, slaveRin, slaveSout, slaveRout,
-qSig, qbarSig: std_logic;
+signal Jin, Kin, CLOCKin: std_logic := '0';
+signal Qout, QBARout: std_logic;
+
+constant clk_period : time := 10 ns;
 
 begin
 
 -- CONNECT DUT
 DUT: JKFlipFlop port map(Jin, Kin, CLOCKin, Qout, QBARout);
 
-	process
-  	begin
+    clk_process: process
+    begin
+        while now < 100 ns loop
+            CLOCKin <= '0';
+            wait for clk_period/2;
+            CLOCKin <= '1';
+            wait for clk_period/2;
+        end loop;
+        wait;
+    end process;
 
-    	Jin <='0'; --start state
-        Kin <='0';
-        CLOCKin <='0';
-        wait for 10 ns;
-        CLOCKin <='1';
-        wait for 10 ns;
+    stim_proc: process
+    begin
+        wait for 2 ns;
 
-        and1 <= '1'; --initialize  circuit
+        Jin <= '0';
+        Kin <= '0';
+        wait for clk_period;
 
-      	Jin <='1'; --set
-      	Kin <='0';
-      	CLOCKin <='0';
-        wait for 10 ns;
-        CLOCKin <='1';
-        wait for 10 ns;
+        Jin <= '0';
+        Kin <= '1';
+        wait for clk_period;
 
-        and1 <= J and qbarSig; --normalize gate
+        Jin <= '0';
+        Kin <= '0';
+        wait for clk_period;
 
-        Jin <='0'; --reset
-      	Kin <='1';
-      	CLOCKin <='0';
-        wait for 10 ns;
-        CLOCKin <='1';
-        wait for 10 ns;
+        Jin <= '1';
+        Kin <= '0';
+        wait for clk_period;
 
-      	-- CLEAR INPUTS
-      	Jin <='0';
-      	kin <='0';
-		CLOCKin <='0';
-      	wait;
-	end process;
+        Jin <= '0';
+        Kin <= '0';
+        wait for clk_period;
+
+        Jin <= '1';
+        Kin <= '1';
+        wait for clk_period;
+
+        wait;
+    end process;
 end tb;
