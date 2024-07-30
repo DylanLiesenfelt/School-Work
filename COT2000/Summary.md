@@ -1,0 +1,1 @@
+Same professor as COP3035, interesting class and content, I enjoyed it but wish there examples of applications of the concepts for programing and computing. Final Grade: TBD (A)
